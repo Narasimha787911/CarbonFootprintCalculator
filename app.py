@@ -4,13 +4,9 @@ import logging
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
-from flask_sqlalchemy import SQLAlchemy
 
 # Set up logging
 logging.basicConfig(level=logging.DEBUG)
-
-class Base(DeclarativeBase):
-    pass
 
 db = SQLAlchemy() 
 login_manager = LoginManager()
