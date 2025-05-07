@@ -43,16 +43,12 @@ Ensure you have the following installed:
    ```bash
    pip install -r requirements.txt
    ```
-4. Initialize the database:
-   ```bash
-   python app.py
-   ```
    This will create `carbon_emission.db` if it doesn’t exist.
-5. Run the Flask application:
+4. Run the Flask application:
    ```bash
-   python app.py
+   python main.py
    ```
-6. Open your browser and navigate to:
+5. Open your browser and navigate to:
    ```
    http://127.0.0.1:5011
    ```
