@@ -28,8 +28,10 @@ Ensure you have the following installed:
 ### Steps to Install and Run
 1. Clone the repository:
    ```bash
-   git clone https://github.com/Narasimha787911/CarbonCalculator.git
-   cd CarbonCalculator
+   git clone https://github.com/Narasimha787911/CarbonFootprintCalculator
+.git
+   cd CarbonFootprintCalculator
+
    ```
 2. Create a virtual environment (optional but recommended):
    ```bash
@@ -52,7 +54,7 @@ Ensure you have the following installed:
    ```
 6. Open your browser and navigate to:
    ```
-   http://127.0.0.1:5000
+   http://127.0.0.1:5011
    ```
 
 ## Usage
