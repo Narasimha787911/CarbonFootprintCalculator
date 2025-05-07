@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+
+{% block title %}Carbon Emission Calculator{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Carbon Footprint Calculator</h1>
+
+<form method="POST" action="{{ url_for('calculator') }}">
+    <div class="card bg-dark-subtle mb-4">
+        <div class="card-body">
+            <h3 class="card-title mb-3">
+                <i class="fas fa-tag me-2 text-info"></i>
+                Calculation Info
+            </h3>
+            <div class="mb-3">
+                <label for="title" class="form-label">Title</label>
+                <input type="text" class="form-control" id="title" name="title" value="My Carbon Footprint" required>
+                <div class="form-text">Give this calculation a memorable name</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card bg-dark-subtle mb-4">
+        <div class="card-body">
+            <h3 class="card-title mb-3">
+                <i class="fas fa-car me-2 text-info"></i>
+                Transportation
+            </h3>
+            
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="car_kilometers" class="form-label">Car Distance</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" id="car_kilometers" name="car_kilometers" value="0" min="0" step="0.1">
+                        <span class="input-group-text">kilometers/week</span>
+                    </div>
+                    <div class="form-text">Average kilometers driven per week</div>
+                </div>
+                
+                <div class="col-md-6">
+                    <label for="car_efficiency" class="form-label">Car Fuel Efficiency</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" id="car_efficiency" name="car_efficiency" value="15" min="1" step="0.1">
+                        <span class="input-group-text">km/liter</span>
+                    </div>
+                    <div class="form-text">Kilometers per liter your vehicle achieves</div>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="two_wheeler_kilometers" class="form-label">Two-Wheeler Distance</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" id="two_wheeler_kilometers" name="two_wheeler_kilometers" value="0" min="0" step="0.1">
+                        <span class="input-group-text">kilometers/week</span>
+                    </div>
+                    <div class="form-text">Average kilometers on motorcycle/scooter per week</div>
+                </div>
+                
+                <div class="col-md-6">
+                    <label for="two_wheeler_efficiency" class="form-label">Two-Wheeler Efficiency</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" id="two_wheeler_efficiency" name="two_wheeler_efficiency" value="50" min="1" step="0.1">
+                        <span class="input-group-text">km/liter</span>
+                    </div>
+                    <div class="form-text">Kilometers per liter your two-wheeler achieves</div>
+                </div>
+            </div>
+            
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="auto_rickshaw_kilometers" class="form-label">Auto Rickshaw</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" id="auto_rickshaw_kilometers" name="auto_rickshaw_kilometers" value="0" min="0" step="0.1">
+                        <span class="input-group-text">kilometers/week</span>
+                    </div>
+                    <div class="form-text">Average kilometers by auto rickshaw per week</div>
+                </div>
+                
+                <div class="col-md-6">
+                    <label for="public_transit_kilometers" class="form-label">Public Transit</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" id="public_transit_kilometers" name="public_transit_kilometers" value="0" min="0" step="0.1">
+                        <span class="input-group-text">kilometers/week</span>
+                    </div>
+                    <div class="form-text">Average kilometers by bus, train, metro, etc. per week</div>
+                </div>
+            </div>
+            
+            <h5 class="mt-4 mb-3">Air Travel (trips per year)</h5>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="flights_domestic" class="form-label">Domestic Flights</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" id="flights_domestic" name="flights_domestic" value="0" min="0">
+                        <span class="input-group-text">trips/year</span>
+                    </div>
+                    <div class="form-text">Flights within India</div>
+                </div>
+                
+                <div class="col-md-6 mb-3">
+                    <label for="flights_international" class="form-label">International Flights</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" id="flights_international" name="flights_international" value="0" min="0">
+                        <span class="input-group-text">trips/year</span>
+                    </div>
+                    <div class="form-text">Flights from India to other countries</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card bg-dark-subtle mb-4">
+        <div class="card-body">
+            <h3 class="card-title mb-3">
+                <i class="fas fa-home me-2 text-info"></i>
+                Home Energy
+            </h3>
+            
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="electricity_kwh" class="form-label">Electricity</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" id="electricity_kwh" name="electricity_kwh" value="0" min="0" step="0.1">
+                        <span class="input-group-text">kWh/month</span>
+                    </div>
+                    <div class="form-text">From your electricity bill (units consumed)</div>
+                </div>
+                
+                <div class="col-md-6 mb-3">
+                    <label for="lpg_cylinders" class="form-label">LPG Cylinders</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" id="lpg_cylinders" name="lpg_cylinders" value="0" min="0" step="0.1">
+                        <span class="input-group-text">cylinders/month</span>
+                    </div>
+                    <div class="form-text">Number of 14.2kg LPG cylinders used per month</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card bg-dark-subtle mb-4">
+        <div class="card-body">
+            <h3 class="card-title mb-3">
+                <i class="fas fa-utensils me-2 text-info"></i>
+                Food
+            </h3>
+            
+            <div class="mb-3">
+                <label for="diet_type" class="form-label">Diet Type</label>
+                <select class="form-select" id="diet_type" name="diet_type">
+                    <option value="vegetarian" selected>Vegetarian (No meat or fish)</option>
+                    <option value="vegan">Vegan (No animal products)</option>
+                    <option value="eggetarian">Eggetarian (Vegetarian + eggs)</option>
+                    <option value="non-vegetarian">Non-Vegetarian (Occasional meat/fish)</option>
+                    <option value="high-non-vegetarian">High Non-Vegetarian (Frequent meat consumption)</option>
+                </select>
+                <div class="form-text">Select the option that best describes your typical diet</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="d-grid gap-2">
+        <button type="submit" class="btn btn-info btn-lg">
+            <i class="fas fa-calculator me-2"></i>
+            Calculate My Carbon Footprint
+        </button>
+    </div>
+</form>
+{% endblock %}

@@ -1,0 +1,296 @@
+{% extends "base.html" %}
+
+{% block title %}Carbon Emission Calculator - Results{% endblock %}
+
+{% block content %}
+<div class="card border-0 shadow mb-4">
+    <div class="card-body">
+        <h1 class="card-title">Your Carbon Footprint Results</h1>
+        <p class="lead">Based on your input, we've calculated your carbon footprint.</p>
+        
+        <div class="row mt-4">
+            <div class="col-md-4 mb-3">
+                <div class="results-highlight h-100">
+                    <div class="text-center">
+                        <h3 class="results-text">{{ "%.1f"|format(footprint.total_footprint) }}</h3>
+                        <p class="results-subtitle mb-0">kg CO₂e Total Annual Emissions</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-8">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h4>What does this mean?</h4>
+                        <p>
+                            The average person produces about 4,000 kg CO₂e per year. 
+                            Your carbon footprint is 
+                            {% if footprint.total_footprint < 3000 %}
+                                <span class="text-success">below average</span>
+                            {% elif footprint.total_footprint < 5000 %}
+                                <span class="text-warning">about average</span>
+                            {% else %}
+                                <span class="text-danger">above average</span>
+                            {% endif %}.
+                        </p>
+                        
+                        <div class="progress mb-3" style="height: 25px;">
+                            <div class="progress-bar bg-info" role="progressbar" 
+                                 style="width: {{ (footprint.transportation_footprint / footprint.total_footprint * 100)|round|int if footprint.total_footprint > 0 else 0 }}%;" 
+                                 aria-valuenow="{{ (footprint.transportation_footprint / footprint.total_footprint * 100)|round|int if footprint.total_footprint > 0 else 0 }}" 
+                                 aria-valuemin="0" aria-valuemax="100">
+                                Transportation {{ "%.1f"|format(footprint.transportation_footprint / footprint.total_footprint * 100 if footprint.total_footprint > 0 else 0) }}%
+                            </div>
+                        </div>
+                        
+                        <div class="progress mb-3" style="height: 25px;">
+                            <div class="progress-bar bg-info" role="progressbar" 
+                                 style="width: {{ (footprint.home_energy_footprint / footprint.total_footprint * 100)|round|int if footprint.total_footprint > 0 else 0 }}%;" 
+                                 aria-valuenow="{{ (footprint.home_energy_footprint / footprint.total_footprint * 100)|round|int if footprint.total_footprint > 0 else 0 }}" 
+                                 aria-valuemin="0" aria-valuemax="100">
+                                Home Energy {{ "%.1f"|format(footprint.home_energy_footprint / footprint.total_footprint * 100 if footprint.total_footprint > 0 else 0) }}%
+                            </div>
+                        </div>
+                        
+                        <div class="progress mb-3" style="height: 25px;">
+                            <div class="progress-bar bg-info" role="progressbar" 
+                                 style="width: {{ (footprint.food_footprint / footprint.total_footprint * 100)|round|int if footprint.total_footprint > 0 else 0 }}%;" 
+                                 aria-valuenow="{{ (footprint.food_footprint / footprint.total_footprint * 100)|round|int if footprint.total_footprint > 0 else 0 }}" 
+                                 aria-valuemin="0" aria-valuemax="100">
+                                Food {{ "%.1f"|format(footprint.food_footprint / footprint.total_footprint * 100 if footprint.total_footprint > 0 else 0) }}%
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-4">
+            <div class="col-md-4 mb-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-car fa-2x text-info mb-3"></i>
+                        <h4 class="fw-bold">{{ "%.1f"|format(footprint.transportation_footprint) }}</h4>
+                        <p class="text-muted">kg CO₂e Transportation</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4 mb-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-home fa-2x text-info mb-3"></i>
+                        <h4 class="fw-bold">{{ "%.1f"|format(footprint.home_energy_footprint) }}</h4>
+                        <p class="text-muted">kg CO₂e Home Energy</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4 mb-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-utensils fa-2x text-info mb-3"></i>
+                        <h4 class="fw-bold">{{ "%.1f"|format(footprint.food_footprint) }}</h4>
+                        <p class="text-muted">kg CO₂e Food</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <h3 class="mt-5 mb-3">Personalized Reduction Suggestions</h3>
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-header bg-info text-white py-3">
+                        <h5 class="mb-0">
+                            <i class="fas fa-car me-2"></i>Transportation
+                            <span class="float-end">{{ "%.1f"|format(footprint.transportation_footprint) }} kg CO₂e</span>
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="alert alert-info" role="alert">
+                            <i class="fas fa-info-circle me-2"></i>
+                            {% if footprint.transportation_footprint < 50 %}
+                                Your transportation emissions are low! Keep up the good work.
+                            {% elif footprint.transportation_footprint < 150 %}
+                                Your transportation emissions are moderate.
+                            {% else %}
+                                Your transportation emissions could be reduced significantly.
+                            {% endif %}
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            {% if footprint.car_kilometers > 0 %}
+                            <li class="list-group-item">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="mb-1">Car Usage Impact</h6>
+                                        <p class="mb-0 text-muted small">{{ "%.1f"|format(footprint.car_kilometers) }} km driven</p>
+                                    </div>
+                                    <span class="badge bg-warning text-dark">{{ "%.1f"|format(footprint.car_kilometers * 2.31 / footprint.car_efficiency) }} kg CO₂e</span>
+                                </div>
+                                <div class="mt-2">
+                                    <i class="fas fa-lightbulb text-warning me-2"></i>
+                                    Switching to public transport 2-3 times a week could save up to {{ "%.0f"|format(footprint.car_kilometers * 2.31 / footprint.car_efficiency * 0.3) }} kg CO₂e annually
+                                </div>
+                            </li>
+                            {% endif %}
+                            
+                            {% if footprint.flights_domestic > 0 or footprint.flights_international > 0 %}
+                            <li class="list-group-item">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="mb-1">Flight Impact</h6>
+                                        <p class="mb-0 text-muted small">
+                                            {{ footprint.flights_domestic }} domestic, 
+                                            {{ footprint.flights_international }} international
+                                        </p>
+                                    </div>
+                                    <span class="badge bg-warning text-dark">
+                                        {{ "%.0f"|format(footprint.flights_domestic * 300 + footprint.flights_international * 2000) }} kg CO₂e
+                                    </span>
+                                </div>
+                                <div class="mt-2">
+                                    <i class="fas fa-lightbulb text-warning me-2"></i>
+                                    Consider video conferencing or train travel when possible
+                                </div>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4 mb-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-header bg-info text-white py-3">
+                        <h5 class="mb-0">
+                            <i class="fas fa-home me-2"></i>Home Energy
+                            <span class="float-end">{{ "%.1f"|format(footprint.home_energy_footprint) }} kg CO₂e</span>
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="alert alert-info" role="alert">
+                            <i class="fas fa-info-circle me-2"></i>
+                            {% if footprint.home_energy_footprint < 60 %}
+                                Your home energy usage is very efficient!
+                            {% elif footprint.home_energy_footprint < 120 %}
+                                Your home energy usage is moderate.
+                            {% else %}
+                                Consider implementing energy-saving measures.
+                            {% endif %}
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            {% if footprint.electricity_kwh > 0 %}
+                            <li class="list-group-item">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="mb-1">Electricity Usage</h6>
+                                        <p class="mb-0 text-muted small">{{ "%.1f"|format(footprint.electricity_kwh) }} kWh monthly</p>
+                                    </div>
+                                    <span class="badge bg-warning text-dark">{{ "%.1f"|format(footprint.electricity_kwh * 0.82) }} kg CO₂e</span>
+                                </div>
+                                <div class="mt-2">
+                                    <i class="fas fa-lightbulb text-warning me-2"></i>
+                                    Solar panels could reduce this by up to {{ "%.0f"|format(footprint.electricity_kwh * 0.82 * 0.6) }} kg CO₂e annually
+                                </div>
+                            </li>
+                            {% endif %}
+                            
+                            {% if footprint.lpg_cylinders > 0 %}
+                            <li class="list-group-item">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="mb-1">LPG Usage</h6>
+                                        <p class="mb-0 text-muted small">{{ "%.1f"|format(footprint.lpg_cylinders) }} cylinders monthly</p>
+                                    </div>
+                                    <span class="badge bg-warning text-dark">{{ "%.1f"|format(footprint.lpg_cylinders * 42) }} kg CO₂e</span>
+                                </div>
+                                <div class="mt-2">
+                                    <i class="fas fa-lightbulb text-warning me-2"></i>
+                                    Using solar cookers and pressure cookers can reduce emissions
+                                </div>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4 mb-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-header bg-info text-white py-3">
+                        <h5 class="mb-0">
+                            <i class="fas fa-utensils me-2"></i>Food & Consumption
+                            <span class="float-end">{{ "%.1f"|format(footprint.food_footprint) }} kg CO₂e</span>
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="alert alert-info" role="alert">
+                            <i class="fas fa-info-circle me-2"></i>
+                            {% if footprint.food_footprint < 1500 %}
+                                Your food-related emissions are very sustainable!
+                            {% elif footprint.food_footprint < 2500 %}
+                                Your food-related emissions are moderate.
+                            {% else %}
+                                Consider adjusting your diet for lower emissions.
+                            {% endif %}
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="mb-1">Diet Type</h6>
+                                        <p class="mb-0 text-muted small">{{ footprint.diet_type|title }}</p>
+                                    </div>
+                                    <span class="badge bg-warning text-dark">{{ "%.0f"|format(footprint.food_footprint) }} kg CO₂e/year</span>
+                                </div>
+                                <div class="mt-2">
+                                    <i class="fas fa-lightbulb text-warning me-2"></i>
+                                    {% if footprint.diet_type == 'non-vegetarian' %}
+                                        Reducing meat consumption to 2-3 times a week could save {{ "%.0f"|format(footprint.food_footprint * 0.3) }} kg CO₂e annually
+                                    {% elif footprint.diet_type == 'vegetarian' %}
+                                        Buying seasonal produce and starting a kitchen garden can further reduce emissions
+                                    {% endif %}
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-info text-white py-3">
+                        <h5 class="mb-0"><i class="fas fa-calendar-alt me-2"></i>Seasonal Recommendations</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            {% for suggestion in seasonal_suggestions %}
+                            <div class="col-md-3 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-leaf text-success me-3"></i>
+                                    <span>{{ suggestion }}</span>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-4">
+            <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">
+                <i class="fas fa-home me-2"></i>
+                Return to Dashboard
+            </a>
+            <a href="{{ url_for('calculator') }}" class="btn btn-info ms-2">
+                <i class="fas fa-calculator me-2"></i>
+                New Calculation
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

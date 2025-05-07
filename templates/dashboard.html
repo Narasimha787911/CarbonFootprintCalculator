@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}Carbon Emission Calculator - Dashboard{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Your Dashboard</h1>
+
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="card bg-dark-subtle h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-calculator fa-3x mb-3 text-info"></i>
+                <h3>Calculate</h3>
+                <p>Calculate a new carbon footprint estimate.</p>
+                <a href="{{ url_for('calculator') }}" class="btn btn-info">
+                    <i class="fas fa-calculator me-2"></i>New Calculation
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4 mb-4">
+        <div class="card bg-dark-subtle h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-history fa-3x mb-3 text-info"></i>
+                <h3>History</h3>
+                <p>View your past carbon footprint calculations.</p>
+                <a href="{{ url_for('my_footprints') }}" class="btn btn-info">
+                    <i class="fas fa-history me-2"></i>View History
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4 mb-4">
+        <div class="card bg-dark-subtle h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-info-circle fa-3x mb-3 text-info"></i>
+                <h3>Learn More</h3>
+                <p>Understand carbon footprint calculation methods.</p>
+                <a href="{{ url_for('about') }}" class="btn btn-info">
+                    <i class="fas fa-info-circle me-2"></i>About
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card bg-dark-subtle mt-4">
+    <div class="card-body">
+        <h2 class="card-title mb-4">Recent Calculations</h2>
+        
+        {% if footprints %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Title</th>
+                            <th>Total Emissions</th>
+                            <th>Transportation</th>
+                            <th>Home Energy</th>
+                            <th>Food</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for footprint in footprints[:5] %}
+                            <tr>
+                                <td>{{ footprint.created_at.strftime('%Y-%m-%d') }}</td>
+                                <td>{{ footprint.title }}</td>
+                                <td>{{ footprint.total_footprint }} kg CO₂e</td>
+                                <td>{{ footprint.transportation_footprint }} kg</td>
+                                <td>{{ footprint.home_energy_footprint }} kg</td>
+                                <td>{{ footprint.food_footprint }} kg</td>
+                                <td>
+                                    <a href="{{ url_for('view_footprint', footprint_id=footprint.id) }}" class="btn btn-sm btn-info">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            {% if footprints|length > 5 %}
+                <div class="text-center mt-3">
+                    <a href="{{ url_for('my_footprints') }}" class="btn btn-outline-info">View All Calculations</a>
+                </div>
+            {% endif %}
+        {% else %}
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle me-2"></i>
+                You haven't made any calculations yet. <a href="{{ url_for('calculator') }}">Start a new calculation</a>.
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

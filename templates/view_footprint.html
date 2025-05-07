@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}Carbon Emission Calculator - View Footprint{% endblock %}
+
+{% block content %}
+<div class="card bg-dark-subtle mb-4">
+    <div class="card-body">
+        <h1 class="card-title">{{ footprint.title }}</h1>
+        <p class="text-muted">
+            <i class="fas fa-calendar me-2"></i>
+            Calculated on {{ footprint.created_at.strftime('%Y-%m-%d %H:%M') }}
+        </p>
+        
+        <div class="row mt-4">
+            <div class="col-md-3 mb-3">
+                <div class="card bg-info text-white h-100">
+                    <div class="card-body text-center">
+                        <h3 class="display-4">{{ "%.1f"|format(footprint.total_footprint) }}</h3>
+                        <p class="lead">kg CO₂e Total</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3 mb-3">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <h4>{{ "%.1f"|format(footprint.transportation_footprint) }}</h4>
+                        <p>kg CO₂e Transportation</p>
+                        <i class="fas fa-car fa-2x text-info"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3 mb-3">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <h4>{{ "%.1f"|format(footprint.home_energy_footprint) }}</h4>
+                        <p>kg CO₂e Home Energy</p>
+                        <i class="fas fa-home fa-2x text-info"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3 mb-3">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <h4>{{ "%.1f"|format(footprint.food_footprint) }}</h4>
+                        <p>kg CO₂e Food</p>
+                        <i class="fas fa-utensils fa-2x text-info"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <h3 class="mt-4 mb-3">Transportation Details</h3>
+        <div class="row">
+            <div class="col-md-4">
+                <p><strong>Car Miles:</strong> {{ footprint.car_miles }}</p>
+                <p><strong>Car Efficiency:</strong> {{ footprint.car_efficiency }} mpg</p>
+            </div>
+            <div class="col-md-4">
+                <p><strong>Public Transit Miles:</strong> {{ footprint.public_transit_miles }}</p>
+            </div>
+            <div class="col-md-4">
+                <p><strong>Short Flights:</strong> {{ footprint.flights_short }}</p>
+                <p><strong>Medium Flights:</strong> {{ footprint.flights_medium }}</p>
+                <p><strong>Long Flights:</strong> {{ footprint.flights_long }}</p>
+            </div>
+        </div>
+        
+        <h3 class="mt-4 mb-3">Home Energy Details</h3>
+        <div class="row">
+            <div class="col-md-4">
+                <p><strong>Electricity:</strong> {{ footprint.electricity_kwh }} kWh</p>
+            </div>
+            <div class="col-md-4">
+                <p><strong>Natural Gas:</strong> {{ footprint.natural_gas_therms }} therms</p>
+            </div>
+            <div class="col-md-4">
+                <p><strong>Heating Oil:</strong> {{ footprint.heating_oil_gallons }} gallons</p>
+            </div>
+        </div>
+        
+        <h3 class="mt-4 mb-3">Food Details</h3>
+        <div class="row">
+            <div class="col-md-4">
+                <p><strong>Diet Type:</strong> {{ footprint.diet_type|capitalize }}</p>
+            </div>
+        </div>
+        
+        <div class="mt-4">
+            <a href="{{ url_for('my_footprints') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left me-2"></i>
+                Back to My Footprints
+            </a>
+            <a href="{{ url_for('calculator') }}" class="btn btn-info ms-2">
+                <i class="fas fa-calculator me-2"></i>
+                New Calculation
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

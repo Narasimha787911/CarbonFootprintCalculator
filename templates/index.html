@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block title %}Carbon Emission Calculator - Home{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="p-5 mb-4 bg-dark-subtle rounded-3">
+    <div class="container-fluid py-5">
+        <h1 class="display-4 fw-bold">Calculate Your Carbon Footprint</h1>
+        <p class="col-md-8 fs-4">
+            Discover your environmental impact with our easy-to-use carbon emission calculator.
+            Track your progress and learn how to reduce your carbon footprint.
+        </p>
+        <a href="{{ url_for('calculator') }}" class="btn btn-info btn-lg">
+            <i class="fas fa-calculator me-2"></i>
+            Start Calculating
+        </a>
+        
+        {% if not current_user.is_authenticated %}
+            <a href="{{ url_for('register') }}" class="btn btn-outline-info btn-lg ms-2">
+                <i class="fas fa-user-plus me-2"></i>
+                Register
+            </a>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Features -->
+<div class="row row-cols-1 row-cols-md-3 g-4 mb-4">
+    <div class="col">
+        <div class="card h-100 bg-dark-subtle">
+            <div class="card-body text-center">
+                <i class="fas fa-calculator fa-3x mb-3 text-info"></i>
+                <h3 class="card-title">Calculate</h3>
+                <p class="card-text">
+                    Calculate your carbon footprint based on transportation, home energy, and food consumption.
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col">
+        <div class="card h-100 bg-dark-subtle">
+            <div class="card-body text-center">
+                <i class="fas fa-chart-line fa-3x mb-3 text-info"></i>
+                <h3 class="card-title">Track</h3>
+                <p class="card-text">
+                    Track your emissions over time and see how lifestyle changes affect your carbon footprint.
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col">
+        <div class="card h-100 bg-dark-subtle">
+            <div class="card-body text-center">
+                <i class="fas fa-leaf fa-3x mb-3 text-info"></i>
+                <h3 class="card-title">Reduce</h3>
+                <p class="card-text">
+                    Get personalized suggestions to reduce your carbon footprint and help fight climate change.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Why Calculate Section -->
+<div class="card bg-dark-subtle mb-4">
+    <div class="card-body">
+        <h2 class="card-title">Why Calculate Your Carbon Footprint?</h2>
+        
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <h5><i class="fas fa-check-circle me-2 text-info"></i>Awareness</h5>
+                <p>
+                    Understanding your carbon footprint is the first step toward making more environmentally 
+                    conscious decisions in your daily life.
+                </p>
+                
+                <h5><i class="fas fa-check-circle me-2 text-info"></i>Accountability</h5>
+                <p>
+                    By tracking your emissions, you can hold yourself accountable and see how your actions 
+                    affect the environment over time.
+                </p>
+                
+                <h5><i class="fas fa-check-circle me-2 text-info"></i>Action</h5>
+                <p>
+                    Our calculator provides personalized recommendations to help you reduce your carbon 
+                    footprint effectively.
+                </p>
+            </div>
+            
+            <div class="col-md-6">
+                <h5><i class="fas fa-info-circle me-2 text-info"></i>Did You Know?</h5>
+                <ul>
+                    <li>The average American produces about 16 tons of CO2 per year</li>
+                    <li>Globally, we need to reach 2 tons per person by 2050 to avoid severe climate change</li>
+                    <li>Simple changes like eating less meat and driving less can significantly reduce your footprint</li>
+                    <li>Reducing your carbon footprint often saves money too, through lower energy bills and reduced consumption</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Call to Action -->
+<div class="card bg-dark-subtle">
+    <div class="card-body text-center p-5">
+        <h2 class="mb-4">Ready to Start?</h2>
+        <p class="lead mb-4">
+            Calculate your carbon footprint today and take the first step toward a more sustainable lifestyle.
+        </p>
+        <a href="{{ url_for('calculator') }}" class="btn btn-info btn-lg px-4 me-2">
+            <i class="fas fa-calculator me-2"></i>
+            Calculate Now
+        </a>
+        <a href="{{ url_for('about') }}" class="btn btn-outline-info btn-lg px-4">
+            <i class="fas fa-info-circle me-2"></i>
+            Learn More
+        </a>
+    </div>
+</div>
+{% endblock %}
